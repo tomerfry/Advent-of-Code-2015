@@ -31,7 +31,7 @@ def main():
 	smallest_dist = 1000
 	biggest_dist = 0
 
-	for perm in itertools.permutations(locations, 3):
+	for perm in itertools.permutations(locations, len(locations)):
 		dist = calc_dist(mappings, perm)
 		if smallest_dist >= dist:
 			smallest_dist = dist
