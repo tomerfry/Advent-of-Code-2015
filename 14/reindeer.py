@@ -8,32 +8,37 @@ class Reindeer(object):
 		self.fly_duration = fly_duration
 		self.rest_duration = rest_duration
 
+		self.resting = False
+		self.time_resting = 0
+		self.time_flying = 0
+		self.distance = 0
+		self.points = 0
+
+	def grant_point(self):
+		self.points += 1
+
 	def get_name(self):
 		return self.name
 
-	def fly_for(self, duration):
-		distance = 0
-		time_resting = 0
-		time_flying = 0
-		resting = False
+	def get_points(self):
+		return self.points
 
-		while duration > 0:
-			# A second passes.
-			duration -= 1
-			
-			if not resting:
-				time_flying += 1
-				distance += self.speed * 1
-			else:
-				time_resting += 1
+	def get_distance(self):
+		return self.distance
 
-			if time_flying == self.fly_duration and not resting:
-				# Needs rest
-				resting = True
-				time_flying = 0
-			elif resting and time_resting == self.rest_duration:
-				# Can fly
-				resting = False
-				time_resting = 0
+	def compete_one_second(self):
+		if not self.resting:
+			self.time_flying += 1
+			self.distance += self.speed * 1
+		else:
+			self.time_resting += 1
 
-		return distance
+		if self.time_flying == self.fly_duration and not self.resting:
+			# Needs rest
+			self.resting = True
+			self.time_flying = 0
+		elif self.resting and self.time_resting == self.rest_duration:
+			# Can fly
+			self.resting = False
+			self.time_resting = 0
+

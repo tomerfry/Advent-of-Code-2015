@@ -9,16 +9,37 @@ INPUT_PATTERN = '(?P<name>.+?) can fly (?P<speed>\d+?) km/s for (?P<fly_duration
 def main():
 	print('Advent of Code 2015')
 	reindeers = []
-	results = {}
 
 	with open('input.txt') as f:
 		reindeers = parse_input(f.readlines())
 
-	for reindeer in reindeers:
-		results[reindeer.get_name()] = reindeer.fly_for(COMPETITION_DURATION)
+	scores = compete(reindeers, COMPETITION_DURATION)
 
-	print(results)
-	print('Winner is with distance {}'.format(max(results.values())))
+	print(scores)
+	print('Winner is with score {}'.format(max(scores)))
+
+
+def compete(reindeers, duration):
+	while duration > 0:
+		# A second passed.
+		duration -= 1
+
+		for reindeer in reindeers:
+			reindeer.compete_one_second()
+
+		reindeer = who_leads(reindeers)
+		reindeer.grant_point()
+
+	return [reindeer.get_points() for reindeer in reindeers]
+
+
+def who_leads(reindeers):
+	furthest_reindeer = reindeers[0]
+
+	for reindeer in reindeers:
+		if reindeer.get_distance() > furthest_reindeer.get_distance():
+			furthest_reindeer = reindeer
+	return furthest_reindeer
 
 
 def parse_input(content_lines):
