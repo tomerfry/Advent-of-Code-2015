@@ -31,3 +31,6 @@ class Recipe(object):
 	def get_calories(self):
 		calorie_count = sum([ingredient.get_calories() for ingredient in self.ingredients])
 		return calorie_count
+
+	def __str__(self):
+		return '\n'.join([str(ing.get_spoons()) for ing in self.ingredients])

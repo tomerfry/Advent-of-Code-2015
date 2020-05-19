@@ -18,20 +18,23 @@ def main():
 	with open('input.txt', 'r') as f:
 		ingredients = parse_ingredients(f.readlines())
 
-	for perm in itertools.permutations(range(1, MAX_SPOONS), len(ingredients)):
+	for perm in itertools.permutations(range(0, MAX_SPOONS), len(ingredients)):
 		if sum(perm) == MAX_SPOONS:
+
 			new_recipe = Recipe(ingredients, perm)
 			score = new_recipe.get_score()
 			calorie_count = new_recipe.get_calories()
 
-			if calorie_count == CALORIES:
-				if highest_score < score:
-					print('recipe score: {}, calorie count: {}'.format(score, calorie_count))
-					highest_score = score
+			if calorie_count != CALORIES:
+				continue
 
+			if highest_score < score:
+				print('recipe score: {}, calorie count: {}'.format(score, calorie_count))
+				print(new_recipe)
+				highest_score = score
 
 	print(highest_score)
-			
+
 
 def parse_ingredients(content_lines):
 	ingredients = []
